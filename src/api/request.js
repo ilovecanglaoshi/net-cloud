@@ -193,7 +193,7 @@ export default request
 
 // 过滤业务
 function filterBusinessStatus(data, isAlert = true, resolve, reject) {
-    if (!data.code || data.code === 0) return resolve(data)
+    if (!data.code || data.code === 200) return resolve(data)
 
     isAlert && Vue.prototype.$alert({persistent: true, title: '温馨提示', content: data.msg})
 
