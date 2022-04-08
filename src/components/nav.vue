@@ -131,10 +131,8 @@ export default {
 .navWrapper {
   height: 50px;
   position: fixed;
+  z-index: 9;
   top: 0;
-  &::-webkit-scrollbar{
-         display:none
-    }
   // background-color: red;
   width: 100%;
   /* 设置标题栏可以拖拽 */

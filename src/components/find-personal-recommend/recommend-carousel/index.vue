@@ -93,7 +93,7 @@ export default {
     sliderStyle() {
       return {
         width: this.width ? this.width + 'rem' : '100%',
-        height: this.height ? this.height + 'rem' : '100%',
+        height: this.height ? (this.height+0.2) * 100 + 'px' : '100%',
         perspective: this.width + 'rem',
         backgroundSize:
           this.imgType == 'percentage' ? '100% 100%' : this.imgType,
@@ -102,7 +102,7 @@ export default {
   },
   mounted() {
     this.sliderDomList = this.$refs.slider.querySelectorAll('div.slider')
-    this.play()
+    // this.play()
   },
   methods: {
     setClass(i) {
@@ -179,8 +179,13 @@ export default {
   width: 100%;
   height: 100%;
   text-align: center;
-  padding: 10px 0;
+  /* margin-left: .18rem; */
+  margin: auto;
+  max-width: 1040px;
+  /* padding: .2rem 0; */
+  /* box-sizing: border-box; */
   position: relative;
+  margin-top: .2rem;
 }
 .slider-container .slider-content {
   position: relative;
@@ -198,7 +203,7 @@ export default {
   padding: 0;
   top: 0;
   left: 50%;
-  width: 70%;
+  width: 73%;
   height: 100%;
   transition: 500ms all ease-in-out;
   background-color: #fff;
@@ -239,11 +244,11 @@ export default {
   z-index: 20;
 }
 .slider-container .slider-content .slider.prev {
-  transform: translate3d(-75%, 0, -100px);
+  transform: translate3d(-78%, 0, -100px);
   z-index: 19;
 }
 .slider-container .slider-content .slider.next {
-  transform: translate3d(-25%, 0, -100px);
+  transform: translate3d(-22%, 0, -100px);
   z-index: 18;
 }
 .slider-container .slider-content i {

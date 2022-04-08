@@ -2,17 +2,20 @@
   <div>
     <div class="recommendWrapper">
       <recommendCarousel :width='7.4' :height='2' :list='bannerList'></recommendCarousel>
+      <recommendSongList></recommendSongList>
     </div>
   </div>
 </template>
 
 <script>
-import recommendCarousel from '../../../components/recommend-carousel/index.vue'
+import recommendSongList from '@/components/find-personal-recommend/recommend-song-list.vue'
+import recommendCarousel from '@/components/find-personal-recommend/recommend-carousel/index.vue'
 import {getBanner} from '@/api/findMusic-personalRecommend'
 export default {
     name:"PersonalRecommend",
     components:{
-      recommendCarousel
+      recommendCarousel,
+      recommendSongList
     },
     data(){
       return {
@@ -40,8 +43,11 @@ export default {
 
 <style lang='scss' scoped>
   .recommendWrapper{
+    overflow-y: scroll;
     display: flex;
     // align-items: center;
+    overflow-x: hidden;
+    flex-direction: column;
     justify-content: center;
   }
 </style>

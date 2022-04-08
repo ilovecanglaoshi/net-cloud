@@ -13,9 +13,9 @@ protocol.registerSchemesAsPrivileged([
 async function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
-    width:1002,
+    width:1018,
     height:681,
-    minWidth: 1002,
+    minWidth: 1018,
     minHeight: 681,
     // frame:false,直接去除导航头部
     titleBarStyle: 'hidden',

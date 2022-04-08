@@ -29,6 +29,9 @@ body,
 #app {
   height: 100%;
   width: 100%;
+   &::-webkit-scrollbar{
+         display:none
+    }
   box-sizing: border-box;
   -webkit-user-select: none;
   -moz-user-select: none;
