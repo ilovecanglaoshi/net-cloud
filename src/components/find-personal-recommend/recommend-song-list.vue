@@ -8,9 +8,9 @@
       <div class="listWrapper">
         <div class="dayRecommend" >
           <div class="dayRecommendPic">
-            <div class="mask">根据您的口味生成每日更新</div>
+            <div class="mask">根据您的音乐口味生成每日更新</div>
             <div class="btn">
-              <i class="iconfont icon-zantingbofang"></i>
+              <i class="iconfont icon-bofang" ></i>
             </div>
           </div>
           <div class="title">每日歌曲推荐</div>
@@ -21,7 +21,7 @@
             :style="{ backgroundImage: 'url(' + item.picUrl + ')' }"
           >
             <div class="btn">
-              <i class="iconfont icon-zantingbofang"></i>
+              <i class="iconfont icon-bofang" ></i>
             </div>
           </div>
           <div class="title">{{ item.name }}</div>
@@ -58,6 +58,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .recommendSongListWrapper {
   margin-top: 25px;
   // padding: 0 .3rem;
@@ -69,9 +70,12 @@ export default {
     color: #333;
     font-size: 18px;
     // font-weight: bold;
-    // margin-bottom: 15px;
-    width: 79%;
+    margin: auto;
     @include flex(row, flex-start, center);
+    margin-bottom: 15px;
+    width: 7.4rem;
+    max-width: 1040px;
+
     span {
       margin-right: -8px;
     }
@@ -107,10 +111,11 @@ export default {
           display: none;
           position: absolute;
           bottom: 8px;
+          @extend .pauseBtn;
           right: 12px;
+          border-radius: 50%;
           i {
-            color: #d33b31;
-            font-size: 30px;
+            @extend .btnI;
           }
         }
         &:hover {
@@ -168,11 +173,12 @@ export default {
         .btn {
           display: none;
           position: absolute;
+          @extend .pauseBtn;
+          border-radius: 50%;
           bottom: 8px;
           right: 12px;
           i {
-            color: #d33b31;
-            font-size: 30px;
+             @extend .btnI;
           }
         }
         &:hover {
@@ -194,8 +200,11 @@ export default {
         }
       }
     }
-    .recommendItem:nth-child(5) {
+    .recommendItem:nth-child(5),.recommendItem:nth-child(10){
       margin-right: 0;
+    }
+    .recommendItem:nth-child(n+6) {
+      margin-bottom: 0;
     }
   }
 }

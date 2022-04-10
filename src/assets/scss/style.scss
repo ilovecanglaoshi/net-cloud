@@ -143,3 +143,38 @@
     align-items: $align-items;
     flex-wrap: $flex-wrap;
 }
+
+.label {
+    color: #333;
+    font-size: 18px;
+    // font-weight: bold;
+    margin: auto;
+    @include flex(row, flex-start, center);
+    margin-bottom: 15px;
+    width: 7.4rem;
+    max-width: 1040px;
+
+    span {
+      margin-right: -8px;
+    }
+    i {
+      font-size: 40px;
+    }
+  }
+.pauseBtn{
+    width: 25px;
+    height: 25px;
+    border: 50%;
+    background-color: #929595;
+    // display: flex;
+    // @include flex(row, center, center)
+
+}
+
+.btnI{
+    color: rgba($color: #d33b31, $alpha: 0.7);
+    position: absolute;
+    left: 5px;
+    bottom:3px;
+    font-size: 18px;
+}

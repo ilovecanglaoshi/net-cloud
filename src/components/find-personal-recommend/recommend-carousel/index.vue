@@ -94,7 +94,7 @@ export default {
       return {
         width: this.width ? this.width + 'rem' : '100%',
         height: this.height ? (this.height+0.2) * 100 + 'px' : '100%',
-        perspective: this.width + 'rem',
+        perspective: this.width*100 + 'px',
         backgroundSize:
           this.imgType == 'percentage' ? '100% 100%' : this.imgType,
       }
