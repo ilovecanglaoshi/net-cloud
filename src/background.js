@@ -1,8 +1,8 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, globalShortcut } from 'electron'
+import { app, protocol, BrowserWindow, globalShortcut, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
-// import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
+import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 // const path = require('path')
 // Scheme must be registered before the app is ready
@@ -10,9 +10,12 @@ protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
 ])
 
+
+
+let mainWindow;
 async function createWindow() {
   // Create the browser window.
-  const win = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width:1018,
     height:681,
     minWidth: 1018,
@@ -23,8 +26,8 @@ async function createWindow() {
       
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
-      contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
+      nodeIntegration: true,
+      contextIsolation: false
     }
   })
 
@@ -83,17 +86,17 @@ async function createWindow() {
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
-    await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
+    await mainWindow.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
     // if (!process.env.IS_TEST) win.webContents.openDevTools()
     if (!process.env.IS_TEST) { // 设置快捷打开控制台
       globalShortcut.register('CommandOrControl+Shift+i', function () {
-        win.webContents.openDevTools()
+        mainWindow.webContents.openDevTools()
       })
     }
   } else {
     createProtocol('app')
     // Load the index.html when not in development
-    win.loadURL('app://./index.html')
+    mainWindow.loadURL('app://./index.html')
   }
 }
 
@@ -116,14 +119,14 @@ app.on('activate', () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
-  // if (isDevelopment && !process.env.IS_TEST) {
-  //   // Install Vue Devtools
-  //   try {
-  //     await installExtension(VUEJS_DEVTOOLS)
-  //   } catch (e) {
-  //     console.error('Vue Devtools failed to install:', e.toString())
-  //   }
-  // }
+  if (isDevelopment && !process.env.IS_TEST) {
+    // Install Vue Devtools
+    try {
+      await installExtension(VUEJS_DEVTOOLS)
+    } catch (e) {
+      console.error('Vue Devtools failed to install:', e.toString())
+    }
+  }
  
   createWindow()
 })
@@ -142,3 +145,41 @@ if (isDevelopment) {
     })
   }
 }
+
+let loginWindow;
+const winURL = process.env.NODE_ENV === 'development'
+  ? 'http://localhost:10086'
+  : `file://${__dirname}/index.html`
+ipcMain.on('open-flow-window', function(){
+  console.log('接受渲染进程的窗口创建请求');
+  if(loginWindow) {
+    loginWindow.show()
+  }else{
+    loginWindow = new BrowserWindow({
+      // parent: mainWindow,
+      modal: true,
+      autoHideMenuBar: true,
+      resizable: false,
+      backgroundColor:'white',
+      width:350,
+      height:530,
+      transparent: true,
+      frame:false, //直接去除导航头部
+      titleBarStyle:false,
+      webPreferences: {
+        nodeIntegration: true,//默认是false,
+        contextIsolation:false,
+        enableRemoteModule:true,
+      }
+    });
+    loginWindow.loadURL(winURL + '/#/login')
+    loginWindow.webContents.openDevTools()
+  }
+  loginWindow.once('ready-to-show', () => {
+    loginWindow.show();
+  });
+  loginWindow.on('closed', () => {
+    loginWindow = null;
+  });
+  
+});

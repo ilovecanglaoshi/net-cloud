@@ -1,5 +1,10 @@
 const port = process.env.port || process.env.npm_config_port || 10086 // dev port
 module.exports = {
+  pluginOptions:{
+    electronBuilder:{
+      nodeIntegration: true
+    }
+  },
     devServer: {
         port: port,
         open: true,

@@ -6,7 +6,7 @@
           <div class="avatar">
             <img src="@/assets/images/defaultAvatar.png" alt="">
           </div>
-          <div class="toLogin">
+          <div class="toLogin" >
             <span class="fs-3 mr-2">未登录</span>
             <i class="iconfont icon-xiangyou fs-1" style="color:#8e8e8e"></i>
           </div>
@@ -52,6 +52,7 @@
 <script>
 // @ is an alias to /src
 // const { dialog } = require('electron')
+import {ipcRenderer} from 'electron'
 export default {
   name: 'Home',
   components: {},
@@ -63,6 +64,13 @@ export default {
   methods:{
     goLogin() {
       console.log('登录');
+      ipcRenderer.send('open-flow-window')
+      // new BrowserWindow({
+      //   width:200,
+      //   height:200,
+      //   titleBarStyle:'hidden',
+      //   frame:false,
+      // })
       // dialog.showOpenDialog()
     },
     active(name) {

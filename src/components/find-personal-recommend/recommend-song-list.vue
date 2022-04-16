@@ -6,13 +6,18 @@
     </div>
     <div class="wrapper" >
       <div class="listWrapper">
-        <div class="dayRecommend" >
+        <div class="dayRecommend" @click="goDayRecommend">
           <div class="dayRecommendPic">
             <div class="mask">根据您的音乐口味生成每日更新</div>
             <div class="btn">
               <i class="iconfont icon-bofang" ></i>
             </div>
+            <div class="canlender">
+              <i class="iconfont icon-rili"></i>
+            </div>
+            <div class="date">{{12}}</div>
           </div>
+          
           <div class="title">每日歌曲推荐</div>
         </div>
         <div class="recommendItem" v-for="item in recommendList" :key="item.id" >
@@ -53,6 +58,9 @@ export default {
         console.log(error)
       }
     },
+    goDayRecommend() {
+      this.$router.push('/songlist/dayRecommend/dayRecommend')
+    }
   },
 }
 </script>
@@ -97,16 +105,17 @@ export default {
       margin-right: 17px;
       width: 1.33rem;
       max-width: 193px;
-
+      // @include flex(row, center, center);
       .dayRecommendPic {
         position: relative;
         height: 1.33rem;
         max-height: 193px;
         border-radius: 10px;
-        border: 1px solid red;
+        // border: 1px solid red;
         margin-bottom: 6px;
         overflow: hidden;
-
+        @include flex(row, center, center);
+        background-color: #000000;
         .btn {
           display: none;
           position: absolute;
@@ -127,7 +136,21 @@ export default {
             display: block;
           }
         }
+        .canlender{
+         i{
+            color: white;
+          // font-weight: bold;
+          font-size: 100px;
+         }
+        }
+        .date{
+          color: white;
+          font-size: 30px;
+          position: absolute;
+          top: 45%;
+        }
       }
+       
       .title {
         color: #575757;
         font-size: 12px;

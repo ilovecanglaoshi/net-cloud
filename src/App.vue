@@ -1,22 +1,23 @@
 <template>
   <div id="app">
-    <Nav></Nav>
+    <!-- <Nav></Nav>
     <div class="content d-flex">
       <Side></Side>
       <div class="rightContent">
         <router-view></router-view>
       </div>
-    </div>
+    </div> -->
+    <router-view></router-view>
   </div>
 </template>
 <script>
-import Nav from '@/components/nav'
-import Side from '@/components/side'
+// import Nav from '@/components/nav'
+// import Side from '@/components/side'
 export default {
   name: 'app',
   components: {
-    Nav,
-    Side,
+    // Nav,
+    // Side,
   },
   data() {
     return {}

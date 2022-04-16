@@ -38,11 +38,15 @@
         </div>
       </div>
       <div class="personalfm" v-if="isActive('/personalFm')"></div>
+      <div class="dayRecommend" v-if="isActive('/songlist')"></div>
       <div class="video" v-if="isActive('/video')">
         视频 / mv
       </div>
       <div class="friends" v-if="isActive('/friends')">
         动态 / 发布动态
+      </div>
+       <div class="pretty" v-if="isActive('/prettyCommon')">
+        精彩评论
       </div>
       <div class="set d-flex">
         <div class="search">

@@ -83,6 +83,21 @@ const routes = [
     // component: Video
     component: () => import(/* webpackChunkName: "RecentPlay" */ '../views/recent-play.vue')
   },
+  {
+    path:'/songlist/dayRecommend/:type',
+    name:'SongList',
+    component: () => import(/* webpackChunkName: "SongList" */ '@/components/songList.vue'),
+  },
+  {
+    path:'/songlist/:type/:id',
+    name:'SongList',
+    component: () => import(/* webpackChunkName: "SongList" */ '@/components/songList.vue'),
+  },
+  {
+    path:'/login',
+    name:'Login',
+    component: () => import(/* webpackChunkName: "Login" */ '../views/login.vue'),
+  },
 ]
 
 const router = new VueRouter({

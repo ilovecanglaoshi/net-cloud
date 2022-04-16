@@ -1,5 +1,8 @@
 <template>
-  <div>私人fm</div>
+<DefaultLayout>
+    <div>私人fm</div>
+  </DefaultLayout>
+  
 </template>
 
 <script>

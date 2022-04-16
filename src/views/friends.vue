@@ -1,5 +1,8 @@
 <template>
-  <div>朋友</div>
+  <DefaultLayout>
+    <div>朋友</div>
+  </DefaultLayout>
+ 
 </template>
 
 <script>

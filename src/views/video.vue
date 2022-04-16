@@ -1,5 +1,8 @@
 <template>
+<DefaultLayout>
   <div>视频</div>
+</DefaultLayout>
+  
 </template>
 
 <script>
