@@ -47,3 +47,18 @@ export function getNewMusic({type, limit}) {
 export function getRecommendMv() {
    return get(`/personalized/mv`)
 }
+
+/**
+ * 获取每日推荐歌单
+ */
+export function getDayRecommendSongList() {
+   return get('/recommend/songs')
+}
+
+
+/**
+ * 获取历史日推
+ */
+export function getHistoryDayrecommend() {
+   return get('/history/recommend/songs')
+}
