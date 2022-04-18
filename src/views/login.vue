@@ -13,13 +13,22 @@
     </div>
     <div class="scanLogin" v-if="isScanLogin">
       <div class="title">扫码登录</div>
-      <div class="qrcodeImg"></div>
-      <div class="des">
+      <div class="qrcodeImg" :style="{backgroundImage: 'url(' + qrImg + ')'}" v-if="!isAuthing">
+        <div class="invilidate" v-if="overdue">
+          <div>二维码已失效</div>
+          <div class="refreshBtn" @click="getQrcodeImg">点击刷新</div>
+        </div>
+      </div>
+      <div class="authing" v-if="isAuthing">
+        <div>扫描成功</div>
+        <div>请在手机上确认登录</div>
+      </div>
+      <div class="des" v-if="!isAuthing">
         <span>使用</span>
         <span>网易云音乐app</span>
         <span>扫码登录</span>
       </div>
-      <div class="otherWay" @click="selectOtherLoginWay">选择其他登录模式 ></div>
+      <div class="otherWay" @click="selectOtherLoginWay" v-if="!isAuthing">选择其他登录模式 ></div>
     </div>
     <div class="accountLogin" v-if="isAccountLogin">
       <div class="logo">
@@ -68,11 +77,17 @@
         <span> 《儿童隐私政策》 </span>
       </div>
     </div>
-    <registry v-if="isRegistry"></registry>
+    <registry v-if="isRegistry" @checkToAccountLogin='checkToAccountLogin'></registry>
+    <div class="modal" v-if="isShowModal">请先勾选同意《服务条款》、《隐私政策》、《儿童隐私政策》</div>
   </div>
 </template>
 
 <script>
+import {getQrcodeKey, 
+getQrImg,
+ getQrcodeStatus,
+ checkLoginStatus
+} from '@/api/login'
 import registry from '@/components/registry'
 import {remote} from 'electron'
 export default {
@@ -82,13 +97,69 @@ export default {
   },
   data() {
     return {
-      isScanLogin: false,
-      isAccountLogin: true,
+      overdue:false, // 二维码过期
+      
+      isScanLogin: true,
+      isAccountLogin: false,
       isRegistry:false,
-      isChecked:false
+      isChecked:false,
+      isShowModal:false,  // 提示框
+      timer:null,
+      qrImg:'',
+      isAuthing: false, // 二维码登录授权中
     }
   },
+  created() {
+    this.getQrcodeImg()
+  },
   methods:{
+    async getQrcodeImg() {
+      this.overdue = false
+      this.isAuthing = false
+      try {
+        const keyResult = await getQrcodeKey()
+        const key = keyResult.data.unikey
+        console.log('二维码key========', key);
+        const img = await getQrImg(key)
+        this.qrImg = img.data.qrimg
+        const time = setInterval(async () => {
+          const result = await getQrcodeStatus(key)
+          console.log(result, '登录授权情况');
+          if(result.code == 800) {
+            // 二维码不存在或已过期
+            this.isAuthing = false
+            this.overdue = true
+          }
+          if(result.code == 802) {
+            // 授权中
+            this.isAuthing = true
+            this.overdue = false
+          }
+          if(result.code == 803) {
+            //授权成功  查看登录状态
+            const statusResult = await checkLoginStatus()
+            const userInfo = {account: statusResult.data.account, profile: statusResult.data.profile}
+            localStorage.setItem('user_info', JSON.stringify(userInfo))
+            // const store = new Store()
+            // store.set('user_info', userInfo)
+            clearInterval(time)
+            this.isAuthing = false
+            // 通知窗口关闭
+            remote.getCurrentWindow().close()
+            
+            
+          }
+
+        }, 4000);
+      } catch (error) {
+        console.log(error);
+      }
+
+    },
+      checkToAccountLogin() {
+        this.isAccountLogin = true
+        this.isRegistry = false
+      },
       checkScanLogin() {
           this.isScanLogin = true
           this.isAccountLogin = !this.isScanLogin
@@ -98,9 +169,20 @@ export default {
           this.isAccountLogin = !this.isScanLogin
       },
       closeWindow() {
+
         remote.getCurrentWindow().close()
       },
       goRegistry() {
+        if(this.timer) return;
+        if(!this.isChecked) {
+          this.isShowModal = true
+          this.timer = setTimeout(() => {
+            this.isShowModal = false
+            clearTimeout(this.timer)
+            this.timer = null
+          }, 2000);
+          return
+        }
         this.isScanLogin = false
         this.isAccountLogin = false
         this.isRegistry = true
@@ -191,8 +273,29 @@ export default {
     .qrcodeImg {
       width: 180px;
       height: 180px;
-      border: 1px solid red;
+      // border: 1px solid red;
       margin-bottom: 20px;
+      background-size: 100% 100%;
+      .invilidate{
+        background-color: rgba($color: #000, $alpha: .7);
+        width: 100%;
+        height: 100%;
+        @include flex(column, center, center);
+        div:nth-child(1) {
+          color: white;
+          margin-bottom: 10px;
+          font-size: 14px;
+        }
+        .refreshBtn{
+          width: 80px;
+          height: 30px;
+          color: white;
+          background-color: #d33b31;
+          text-align: center;
+          line-height: 30px;
+          border-radius: 15px;
+        }
+      }
     }
     .des {
       font-size: 14px;
@@ -348,6 +451,19 @@ export default {
         }
       }
     }
+  }
+   .modal{
+    width: 270px;
+    border-radius: 8px;
+    height: 72px;
+    background-color: rgba($color: #464646, $alpha: .6);
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    padding: 0 5px;
+    transform: translate(-50%, -50%);
   }
 }
 </style>

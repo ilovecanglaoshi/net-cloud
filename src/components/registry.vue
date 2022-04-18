@@ -44,7 +44,8 @@
           网易邮箱
         </div>
       </div>
-    <div class="backLogin"> 返回登录 </div>
+    <!--eslint-disable-next-line vue/no-parsing-error-->
+    <div class="backLogin" @click="goBack"> < 返回登录 </div>
     </div>
     
   </div>
@@ -71,6 +72,9 @@ export default {
       },
       closeWindow() {
         remote.getCurrentWindow().close()
+      },
+      goBack() {
+        this.$emit('checkToAccountLogin')
       }
   }
 }
@@ -164,7 +168,7 @@ export default {
       text-align: center;
       line-height: 40px;
       font-size: 16px;
-      margin-bottom: 45px;
+      margin-bottom: 40px;
     }
     .tip{
         margin-top: 10px;
@@ -214,6 +218,14 @@ export default {
         cursor: pointer;
       }
     }
+    .backLogin{
+      color: #686868;
+      margin-top: 25px;
+      &:hover{
+        cursor: pointer;
+      }
+    }
   }
+ 
 }
 </style>

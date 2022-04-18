@@ -2,8 +2,11 @@
 
 import { app, protocol, BrowserWindow, globalShortcut, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
+
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
+const Store = require('electron-store');
+Store.initRenderer();
 // const path = require('path')
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -159,7 +162,7 @@ ipcMain.on('open-flow-window', function(){
       // parent: mainWindow,
       modal: true,
       autoHideMenuBar: true,
-      resizable: false,
+      // resizable: false,
       backgroundColor:'white',
       width:350,
       height:530,
@@ -173,12 +176,19 @@ ipcMain.on('open-flow-window', function(){
       }
     });
     loginWindow.loadURL(winURL + '/#/login')
-    loginWindow.webContents.openDevTools()
+    // loginWindow.webContents.openDevTools()
   }
   loginWindow.once('ready-to-show', () => {
     loginWindow.show();
   });
   loginWindow.on('closed', () => {
+    console.log('窗口被关闭，是否接受到通知？？');
+    // const store = new Store();
+    // if(store.get('user_info')) {
+    //   event.sender.send('update')
+    // }
+    
+    // ipcMain.send('update')
     loginWindow = null;
   });
   

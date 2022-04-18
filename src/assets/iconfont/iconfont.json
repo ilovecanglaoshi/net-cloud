@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "3990434",
+      "name": "bofang",
+      "font_class": "bofang2",
+      "unicode": "e6a3",
+      "unicode_decimal": 59043
+    },
+    {
+      "icon_id": "14584493",
+      "name": "shenglvehao",
+      "font_class": "shenglvehao",
+      "unicode": "e624",
+      "unicode_decimal": 58916
+    },
+    {
       "icon_id": "593048",
       "name": "weixin-bg",
       "font_class": "weixinbg",

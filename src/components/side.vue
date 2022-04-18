@@ -1,8 +1,16 @@
 <template>
   <div class="homeWrap">
       <div class="left">
-        <!-- <div class="isLoginHeader"></div> -->
-        <div class="isNotLoginHeader" @click="goLogin">
+        <div class="isLoginHeader" v-if="isLogin">
+          <div class="avatar">
+            <img :src="userInfo.avatarUrl" alt="">
+          </div>
+          <div class="toLogin" >
+            <span class="fs-3 mr-2">{{userInfo.nickname}}</span>
+            <i class="iconfont icon-xiangyou fs-1" style="color:#8e8e8e"></i>
+          </div>
+        </div>
+        <div class="isNotLoginHeader" @click="goLogin" v-if="!isLogin">
           <div class="avatar">
             <img src="@/assets/images/defaultAvatar.png" alt="">
           </div>
@@ -58,20 +66,45 @@ export default {
   components: {},
   data() {
     return {
-      isActive: 'isActive'
+      isActive: 'isActive',
+      userInfo:{},
+      isLogin:false
     }
   },
+  created() {
+    this.initInfo()
+  },
+  mounted() {
+    if(!this.userInfo.nickname) {
+      this.watchInfoUpdate()
+    }
+    
+    // ipcRenderer.on('update', () => {
+    //   console.log('接收更新信息的提示');
+    // })
+  },  
   methods:{
+    initInfo() {
+      const info = localStorage.getItem('user_info')
+      if(info) {
+        this.isLogin = true
+        this.userInfo = JSON.parse(info).profile
+      }
+    },
+    watchInfoUpdate() {
+      const cb = () => {
+        console.log('监听到storage变化了====');
+        const info = localStorage.getItem('user_info')
+        if(info) {
+          this.isLogin = true
+          this.userInfo = JSON.parse(info).profile
+        }
+        window.removeEventListener('storage', cb)
+      }
+      window.addEventListener('storage', cb)
+    },
     goLogin() {
-      console.log('登录');
       ipcRenderer.send('open-flow-window')
-      // new BrowserWindow({
-      //   width:200,
-      //   height:200,
-      //   titleBarStyle:'hidden',
-      //   frame:false,
-      // })
-      // dialog.showOpenDialog()
     },
     active(name) {
       return this.$route.path.startsWith('/' + name)
@@ -79,7 +112,7 @@ export default {
     go(path) {
       if(this.$route.path !== path && (!(path == '/' && this.$route.path.startsWith('/find')))) {
          this.$router.push(path)
-        console.log(this.$route,'route')
+        // console.log(this.$route,'route')
       }
      
     }
@@ -110,6 +143,7 @@ export default {
         height: 40px;
         border-radius: 50%;
         margin-right: 12px;
+        overflow: hidden;
         img{
           width: 100%;
           height: 100%;

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import Vue from 'vue'
+// import Vue from 'vue'
 // import store from '../store'
 import {getBaseURL} from '@/utils'
 // import {getRefreshToken, getToken, setToken} from '@/utils/auth'
@@ -107,7 +107,7 @@ request.interceptors.request.use(
         // } else {
         //     config.headers.Authorization = 'Basic aGVhbHRoOmhlYWx0aA=='
         // }
-
+        
         return config
     },
     (error) => {
@@ -192,12 +192,22 @@ request.interceptors.response.use(
 export default request
 
 // 过滤业务
-function filterBusinessStatus(data, isAlert = true, resolve, reject) {
-    if (!data.code || data.code === 200) return resolve(data)
+// function filterBusinessStatus(data, isAlert = true, resolve, reject) {
+//     if (!data.code || data.code === 200) 
+//     return resolve(data)
 
-    isAlert && Vue.prototype.$alert({persistent: true, title: '温馨提示', content: data.msg})
+//     isAlert && Vue.prototype.$alert({persistent: true, title: '温馨提示', content: data.msg})
 
-    return reject(data)
+//     return reject(data)
+// }
+
+function filterBusinessStatus(data,  resolve) {
+    // if (!data.code || data.code === 200) 
+    return resolve(data)
+
+    // isAlert && Vue.prototype.$alert({persistent: true, title: '温馨提示', content: data.msg})
+
+    // return reject(data)
 }
 
 /**
@@ -207,11 +217,11 @@ function filterBusinessStatus(data, isAlert = true, resolve, reject) {
  * @param {Boolean} isAlert 错误弹窗 ｜ 默认：true
  * @returns {Promise}
  */
-export function post(url, params, isAlert = true) {
+export function post(url, params) {
     return new Promise((resolve, reject) => {
         request
             .post(url, params)
-            .then((res) => filterBusinessStatus(res.data, isAlert, resolve, reject))
+            .then((res) => filterBusinessStatus(res.data, resolve, reject))
             .catch((error) => {
                 reject(error)
             })
@@ -225,7 +235,7 @@ export function post(url, params, isAlert = true) {
  * @param {*} isAlert
  * @return {*}
  */
-export function upload(url, params, isAlert = true) {
+export function upload(url, params) {
     return new Promise((resolve, reject) => {
         request
             .post(url, params, {
@@ -233,7 +243,7 @@ export function upload(url, params, isAlert = true) {
                     'Content-Type': 'multipart/form-data',
                 },
             })
-            .then((res) => filterBusinessStatus(res.data, isAlert, resolve, reject))
+            .then((res) => filterBusinessStatus(res.data,resolve, reject))
             .catch((error) => {
                 reject(error)
             })
@@ -247,11 +257,11 @@ export function upload(url, params, isAlert = true) {
  * @param {Boolean} isAlert 错误弹窗 ｜ 默认：true
  * @returns {Promise}
  */
-export function put(url, params, isAlert = true) {
+export function put(url, params) {
     return new Promise((resolve, reject) => {
         request
             .put(url, params)
-            .then((res) => filterBusinessStatus(res.data, isAlert, resolve, reject))
+            .then((res) => filterBusinessStatus(res.data, resolve, reject))
             .catch((error) => {
                 reject(error)
             })
@@ -265,11 +275,11 @@ export function put(url, params, isAlert = true) {
  * * @param {Boolean} isAlert 错误弹窗 ｜ 默认：true
  * @returns {Promise}
  */
-export function get(url, params, isAlert = true) {
+export function get(url, params) {
     return new Promise((resolve, reject) => {
         request
             .get(url, {params})
-            .then((res) => filterBusinessStatus(res.data, isAlert, resolve, reject))
+            .then((res) => filterBusinessStatus(res.data, resolve, reject))
             .catch((error) => {
                 reject(error)
             })
@@ -294,11 +304,11 @@ export function download(url, params) {
  * * @param {Boolean} isAlert 错误弹窗 ｜ 默认：true
  * @returns {Promise}
  */
-export function del(url, params, isAlert = true) {
+export function del(url, params) {
     return new Promise((resolve, reject) => {
         request
             .delete(url, {params})
-            .then((res) => filterBusinessStatus(res.data, isAlert, resolve, reject))
+            .then((res) => filterBusinessStatus(res.data, resolve, reject))
             .catch((error) => {
                 reject(error)
             })
