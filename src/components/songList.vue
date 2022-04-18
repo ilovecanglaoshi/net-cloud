@@ -120,33 +120,40 @@
             </div>
           </div>
         </div>
-        <div class="songList" v-for="(item, index) in 20" :key="index" :class="index % 2 == 0 ? 'odd' : 'even'">
-        <div class="songlistWrapper">
-           <div class="otherInfo">
-            <div class="num">{{ numFormat(index) }}</div>
-            <div class="collection">
-              <i class="iconfont icon-aixin"></i>
-              <!-- <i class="iconfont icon-aixin"></i> -->
+        <div class="songList" v-for="(item, index) in songList" :key="index" :class="index % 2 == 0 ? 'odd' : 'even'">
+          <div class="songlistWrapper">
+            <div class="otherInfo">
+              <div class="num">{{ numFormat(index) }}</div>
+              <div class="collection">
+                <i class="iconfont icon-aixin"></i>
+                <!-- <i class="iconfont icon-aixin"></i> -->
+              </div>
+              <div class="download">
+                <i class="iconfont icon-xiazai"></i>
+              </div>
             </div>
-            <div class="download">
-              <i class="iconfont icon-xiazai"></i>
+            <div class="wrapper" >
+              <div class="musicTitle">
+                <span>{{item.name}}</span>
+                <div class="isSQ" >SQ</div>
+                <div class="mv" v-if="item.mv">
+                  <i class="iconfont icon-bofang2"></i>
+                </div>
+                <div class="menu" @click="menuSelf(item)">
+                  <i class="iconfont icon-shenglvehao"></i>
+                </div>
+              </div>
+              <div class="songer">
+                <span>{{item.ar[0].name}}</span>
+              </div>
+              <div class="album" >
+                <span>{{item.al.name}}</span>
+              </div>
+              <div class="time">
+                <span>{{timeCalc(item.dt)}}</span>
+              </div>
             </div>
           </div>
-          <div class="wrapper" >
-            <div class="musicTitle">
-              <span>name</span>
-            </div>
-            <div class="songer">
-              <span>歌手</span>
-            </div>
-            <div class="album">
-              <span>专辑</span>
-            </div>
-            <div class="time">
-              <span>时长</span>
-            </div>
-          </div>
-        </div>
         </div>
       </div>
     </div>
@@ -156,7 +163,7 @@
 
 <script>
 // 暂时没做登录 日推用历史推送记录
-import {getHistoryDayrecommend} from '@/api/findMusic-personalRecommend'
+import {getDayRecommendSongList} from '@/api/findMusic-personalRecommend'
 export default {
   name: 'SongList',
   data() {
@@ -176,11 +183,19 @@ export default {
   methods: {
     async getSongList() {
       if(this.$route.path.includes('dayRecommend')) {
-        const result = await getHistoryDayrecommend()
+        const result = await getDayRecommendSongList()
         console.log(result, 'result');
+        this.songList = result.data.dailySongs
       }
     },
+    menuSelf() {
 
+    },
+    timeCalc(time ){
+      const min = Math.floor(time / 1000 / 60)
+      const sec = Math.floor(time / 1000 ) % 60
+      return (min < 10 ? '0' + min : min) + ':' + (sec< 10 ?'0' + sec : sec)
+    },
     numFormat(index) {
       return index < 9 ? `0${index + 1}` : index + 1
     },
@@ -379,42 +394,81 @@ export default {
           background-color: #f4f4f5;
         }
         .otherInfo {
-        width: 115px!important;
-          padding-left: 20px;
-        //   box-sizing: border-box;
-        color: #b1b1b1;
-          &:hover{
-          background-color: #f4f4f5;
+          width: 115px!important;
+            padding-left: 20px;
+          //   box-sizing: border-box;
+          color: #b1b1b1;
+            &:hover{
+            background-color: #f4f4f5;
 
-        }
-        @include flex(row, flex-start, center);
-        font-size: 12px;
-        .num {
-          margin-right: 24px;
-          width: 15px;
-        }
-        .collection {
-          margin-right: 14px;
-          &:hover {
+          }
+          @include flex(row, flex-start, center);
+          font-size: 12px;
+          .num {
+            margin-right: 24px;
+            width: 15px;
+          }
+          .collection {
+            margin-right: 14px;
+            &:hover {
+              color: #777;
+            }
+          }
+          .download:hover {
             color: #777;
           }
         }
-        .download:hover {
-          color: #777;
-        }
-      }
       .wrapper {
         width: calc(100% - 115px);
         height: 35px;
         @include flex(row, flex-start, center);
+         .menu{
+           display: none;
+           i{
+             font-size: 20px;
+             
+           }
+          }
         &:hover{
           background-color: #f4f4f5;
-          
+          .menu{
+            display: block;
+            i{
+             color: #9b9b9b;
+             &:hover{
+               color: #4f4f4f;
+             }
+            }
+          }
         }
         .musicTitle {
           color: #4f4f4f;
           width: 41.7%;
           padding-left: 8px;
+          @include flex(row, flex-start, center);
+          .isSQ{
+            width: 18px;
+            height: 12px;
+            border: 1px solid #f7672e;
+            font-size: 9px;
+            color: #f7672e;
+            text-align: center;
+            line-height: 10px;
+            border-radius: 3px;
+            margin: 0 4px;
+
+          }
+          .mv {
+            // padding-top: 2px;
+            i{
+              font-size: 18px;
+            color: #d85952;
+            
+          }
+          }
+          
+         
+
         }
         .songer {
           width: 20%;
@@ -428,7 +482,8 @@ export default {
         .album {
           width: 27.3%;
           padding-left: 6px;
-           &:hover{
+           @include multiEllipsis(1);
+          &:hover{
             cursor: pointer;
             color: #737373;
           }

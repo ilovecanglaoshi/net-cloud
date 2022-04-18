@@ -1,10 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import FindMusic from '../views/find-music'
-// import PersonalRecommend from '../views/find-music/components/personal-recommend.vue'
-// import Video from '../views/video'
+import History from '@/utils/history'
 Vue.use(VueRouter)
-
+Vue.use(History)
 const routes = [
   {
     path: '/',
@@ -99,10 +97,48 @@ const routes = [
     component: () => import(/* webpackChunkName: "Login" */ '../views/login.vue'),
   },
 ]
-
+// 实例化之前，扩展Router
+VueRouter.prototype.goBack = function () {
+  this.isBack = true;
+  this.back();
+}
+// 实例化之前，扩展Router
+VueRouter.prototype.goForward = function () {
+  this.isForward = true;
+  this.forward();
+}
+const originalPush = VueRouter.prototype.push
+ 
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 const router = new VueRouter({
   routes,
   scrollBehavior: () => ({ y: 0 }),
+})
+// // // afterEach记录历史记录
+// router.afterEach((to) => {
+//   // if (!router.isBack) {
+//   //   // 后退
+//   //   // History.pop();
+//   //   router.isBack = false;
+//   // } 
+//   if(!router.isForward || !router.isBack) {
+
+//     History.push(to.path);
+   
+//   }
+//   if(router.isForward) {
+//     router.isForward = false
+//   }
+//   if(router.isBack) {
+//     router.isBack = false
+//   }
+// })
+router.beforeEach((to, from, next) => {
+  console.log(to, 'tototototot');
+  console.log(from, 'fromfromfrom');
+  next()
 })
 
 export default router

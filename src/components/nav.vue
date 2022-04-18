@@ -2,16 +2,18 @@
   <div class="navWrapper d-flex">
     <div class="left bg-black_11">
       <div class="arrow d-flex">
-        <div class="toleft mr-10">
+        <div class="toleft mr-10" @click="goBack($route.path)">
           <i
-            class="iconfont icon-jiantou_liebiaoxiangzuo_o text-black_2"
+            class="iconfont icon-jiantou_liebiaoxiangzuo_o "
             style="font-size: 35px;"
+            :class="$routerHistory.canBack($route.path)?'red':'text-black_6'"
           ></i>
         </div>
-        <div class="toright">
+        <div class="toright" @click="goForward($route.path)">
           <i
-            class="iconfont icon-jiantou_liebiaoxiangyou_o text-black_2"
+            class="iconfont icon-jiantou_liebiaoxiangyou_o "
             style="font-size: 35px;"
+            :class="$routerHistory.canForward($route.path)?'red':'text-black_6'"
           ></i>
         </div>
       </div>
@@ -73,6 +75,7 @@
 </template>
 
 <script>
+import History from '@/utils/history'
 export default {
   name: 'Nav',
   data() {
@@ -108,8 +111,23 @@ export default {
     },
     '$route.path':{
       handler(newVal) {
-        if(!newVal.startsWith('/find')) {
+        if(newVal == '/findMusic/personalRecommend') {
           this.activeIndex = 0
+        }
+        if(newVal == '/findMusic/songList') {
+          this.activeIndex = 1
+        }
+        if(newVal == '/findMusic/hostRadio') {
+          this.activeIndex = 2
+        }
+        if(newVal == '/findMusic/rank') {
+          this.activeIndex = 3
+        }
+        if(newVal == '/findMusic/singer') {
+          this.activeIndex = 4
+        }
+        if(newVal == '/findMusic/newMusic') {
+          this.activeIndex = 5
         }
       }
     }
@@ -124,6 +142,18 @@ export default {
     // }
   },
   methods: {
+    goBack() {
+      console.log(History._history, 'History._historyHistory._history');
+      // this.$router.back()
+      this.$router.goBack()
+    },
+    goForward() {
+      console.log(History._history, 'History._historyHistory._history');
+      // history.forward()
+      this.$router.goForward()
+      // console.log(this.$route);
+      // this.$router.go(1);
+    },
     isActive(path) {
       return this.$route.path.startsWith(path)
     },
@@ -162,6 +192,9 @@ export default {
         background-color: #e9e9e9;
         border-radius: 50%;
       }
+    }
+    .red{
+      color: red;
     }
   }
   .right {
