@@ -130,8 +130,9 @@ export default {
   padding-top: 50px;
   position: fixed;
   left: 0;
+  height: 100%;
   .left{
-    height: 560px;
+    // height: calc(100% - 110px);
     background-color: #ededed;
     width: 200px;
     .isLoginHeader,.isNotLoginHeader{

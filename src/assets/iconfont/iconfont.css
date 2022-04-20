@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3302748 */
-  src: url('iconfont.woff2?t=1650292029924') format('woff2'),
-       url('iconfont.woff?t=1650292029924') format('woff'),
-       url('iconfont.ttf?t=1650292029924') format('truetype');
+  src: url('iconfont.woff2?t=1650466056153') format('woff2'),
+       url('iconfont.woff?t=1650466056153') format('woff'),
+       url('iconfont.ttf?t=1650466056153') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,122 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-shengyin:before {
+  content: "\e609";
+}
+
+.icon-jingyu:before {
+  content: "\e60b";
+}
+
+.icon-guanbishengyin:before {
+  content: "\e616";
+}
+
+.icon-liebiaoxunhuan:before {
+  content: "\e688";
+}
+
+.icon-liebiao:before {
+  content: "\e606";
+}
+
+.icon-danquxunhuan2:before {
+  content: "\e653";
+}
+
+.icon-shanchu:before {
+  content: "\e626";
+}
+
+.icon-icon-test:before {
+  content: "\e61c";
+}
+
+.icon-huabi:before {
+  content: "\e6cf";
+}
+
+.icon-huabi1:before {
+  content: "\e744";
+}
+
+.icon-shunxubofang1:before {
+  content: "\e6f0";
+}
+
+.icon-xiangyou1:before {
+  content: "\e71a";
+}
+
+.icon-liuyan-duandian:before {
+  content: "\e60e";
+}
+
+.icon-aite1:before {
+  content: "\e889";
+}
+
+.icon-fenxiang2:before {
+  content: "\e61d";
+}
+
+.icon-geci24:before {
+  content: "\e608";
+}
+
+.icon-shanchu1:before {
+  content: "\e611";
+}
+
+.icon-xiangyou2:before {
+  content: "\e613";
+}
+
+.icon-huiyuanzhongxin:before {
+  content: "\e660";
+}
+
+.icon-huiyuanzhongxin1:before {
+  content: "\e63c";
+}
+
+.icon-delete:before {
+  content: "\e614";
+}
+
+.icon-xiangyou-xian:before {
+  content: "\e63e";
+}
+
+.icon-gouwuche:before {
+  content: "\e615";
+}
+
+.icon-liebiao1:before {
+  content: "\e6e9";
+}
+
+.icon-datu:before {
+  content: "\e603";
+}
+
+.icon-dengji:before {
+  content: "\e629";
+}
+
+.icon-4list:before {
+  content: "\e683";
+}
+
+.icon-dianzan1:before {
+  content: "\e61b";
+}
+
+.icon-guanji:before {
+  content: "\e678";
 }
 
 .icon-bofang2:before {
