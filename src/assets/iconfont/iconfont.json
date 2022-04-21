@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "570667",
+      "name": "jiantouxiangshang",
+      "font_class": "jiantouxiangshang",
+      "unicode": "e635",
+      "unicode_decimal": 58933
+    },
+    {
+      "icon_id": "5042583",
+      "name": "gongzuotai",
+      "font_class": "gongzuotai",
+      "unicode": "e8a8",
+      "unicode_decimal": 59560
+    },
+    {
+      "icon_id": "15995149",
+      "name": "工作台-默认",
+      "font_class": "gongzuotai-moren",
+      "unicode": "e6f7",
+      "unicode_decimal": 59127
+    },
+    {
       "icon_id": "1106193",
       "name": "声音",
       "font_class": "shengyin",

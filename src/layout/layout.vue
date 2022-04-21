@@ -7,11 +7,13 @@
                 <slot></slot>
             </div>
         </div>
+        <musicPlayOther></musicPlayOther>
        <Footer></Footer>
     </div>
 </template>
 
 <script>
+import musicPlayOther from '@/components/music-play-other'
 import Footer from '@/components/footer'
 import Side from '@/components/side'
 import Nav from "@/components/nav"
@@ -20,7 +22,8 @@ export default {
     components:{
         Nav,
         Side,
-        Footer
+        Footer,
+        musicPlayOther
     }
 }
 </script>
