@@ -503,7 +503,7 @@ export default {}
             border-radius: 50%;
             background-color: rgba($color: #fff, $alpha: .6);
             i{
-              @extend .btn_1;
+              @include btn_1(0.8);
             }
           }
         }

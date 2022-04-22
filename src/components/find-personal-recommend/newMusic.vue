@@ -111,7 +111,7 @@ export default {
                         // right: 12px;
                         border-radius: 50%;
                         i {
-                            @extend .btnI;
+                            @include btn_1(0.7);
                         }
                     }
                 }

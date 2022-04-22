@@ -171,17 +171,10 @@
 
 }
 
-.btnI{
-    color: rgba($color: #d33b31, $alpha: 0.7);
+@mixin btn_1($alpha){
+    color: rgba($color: #d33b31, $alpha: $alpha);
     position: absolute;
     left: 5px;
     bottom:3px;
     font-size: 18px;
 }
-// .btn_1{
-//     color: rgba($color: #d33b31, $alpha: .8);
-//     position: absolute;
-//     left: 5px;
-//     bottom:3px;
-//     font-size: 18px;
-// }

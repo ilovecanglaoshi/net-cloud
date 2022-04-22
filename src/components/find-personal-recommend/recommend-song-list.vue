@@ -124,7 +124,7 @@ export default {
           right: 12px;
           border-radius: 50%;
           i {
-            @extend .btnI;
+            @include btn_1(0.7);
           }
         }
         &:hover {
@@ -201,7 +201,7 @@ export default {
           bottom: 8px;
           right: 12px;
           i {
-             @extend .btnI;
+             @include btn_1(0.7);
           }
         }
         &:hover {
