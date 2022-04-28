@@ -63,6 +63,7 @@ export const request = axios.create({
             'Content-Type': 'application/json;charset=utf-8',
         },
     },
+    // responseType:"arraybuffer",
     // 是否跨站点访问控制请求
     withCredentials: true,
     timeout: 1000000,

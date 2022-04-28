@@ -12,8 +12,7 @@ import {
 } from 'electron';
 import Store from 'electron-store';
 import { autoUpdater } from 'electron-updater';
-import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
-import { registerGlobalShortcut } from './electron/globalShorcut';
+import { registerGlobalShortcut } from '../electron/globalShorcut';
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import {
     isWindows,
@@ -71,7 +70,7 @@ const closeOnLinux = (e, win, store) => {
     win = null;
     app.quit();
   };
-
+import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 class Background {
     constructor() {
       this.window = null;
@@ -401,4 +400,4 @@ class Background {
     }
   }
 
-new Background()
+  export default Background

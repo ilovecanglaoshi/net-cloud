@@ -145,7 +145,14 @@
 </template>
 
 <script>
-export default {}
+export default {
+  name:"MusicPlayOther",
+  data() {
+    return {
+
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

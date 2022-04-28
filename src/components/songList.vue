@@ -120,10 +120,19 @@
             </div>
           </div>
         </div>
-        <div class="songList" v-for="(item, index) in songList" :key="index" :class="index % 2 == 0 ? 'odd' : 'even'">
+        <div class="songList" v-for="(item, index) in songList" :key="index" :class="index % 2 == 0 ? 'odd' : 'even'" v-on:dblclick="playMusic(item)">
           <div class="songlistWrapper">
             <div class="otherInfo">
-              <div class="num">{{ numFormat(index) }}</div>
+              <div class="numWrap" v-if="$store.state.modulePLayingSongInfo.info.id === item.id">
+                <div class="num" v-if="$store.state.modulePLayingSongInfo.isPlaying">
+                  <i class="iconfont icon-yinlianglabashengyin" style="color:#d33b31"></i>
+                </div>
+                <div class="num" v-else>
+                  <i class="iconfont icon-jingyin1" style="color:#d33b31"></i>
+                </div>
+              </div>
+             
+              <div class="num" v-else>{{ numFormat(index) }}</div>
               <div class="collection">
                 <i class="iconfont icon-aixin"></i>
                 <!-- <i class="iconfont icon-aixin"></i> -->
@@ -143,11 +152,11 @@
                   <i class="iconfont icon-shenglvehao"></i>
                 </div>
               </div>
-              <div class="songer">
-                <span>{{item.ar[0].name}}</span>
+              <div class="songer" >
+                <span @click.stop="goSongerPage(item)">{{item.ar[0].name}}</span>
               </div>
               <div class="album" >
-                <span>{{item.al.name}}</span>
+                <span @click.stop="goAlbumpage(item)">{{item.al.name}}</span>
               </div>
               <div class="time">
                 <span>{{timeCalc(item.dt)}}</span>
@@ -162,25 +171,79 @@
 </template>
 
 <script>
+// const ipcRenderer = window.require('electron').ipcRenderer
 // 暂时没做登录 日推用历史推送记录
+// 大致思路：
+// 
+import {Howl,Howler} from 'howler'
+import {getMusicUrl} from '@/api/common'
 import {getDayRecommendSongList} from '@/api/findMusic-personalRecommend'
+import { mapState } from 'vuex'
 export default {
   name: 'SongList',
   data() {
     return {
       isShowHead: false,
       activeIndex: 0,
+
       songList: [],
       titleSort: 0,
       songerSort: 0,
       albumSort: 0,
       timeSort: 0,
+      playOptions:{
+        src:[],
+        loop:false,
+        volume:0,
+        autoplay:false
+      },
+      sound:null,
     }
   },
   created() {
     this.getSongList()
   },
+  mounted() {
+    
+  },  
+  computed:{
+    ...mapState('modulePLayingSongInfo',['isPlaying', 'type', 'info']),
+  },  
   methods: {
+    async playMusic(item) {
+      if(this.isPlaying && this.info.id === item.id) return;
+      Howler.unload()
+      this.$store.commit('modulePLayingSongInfo/updatePLaying', {
+        type:'dayRecommend',
+        info:{
+          name: item.name,
+          id:item.id,
+          ar: item.ar,
+          alia:item.alia,
+          fee:item.fee,
+          mv:item.mv,
+          dt:item.dt,
+          al:item.al
+        }
+      })
+
+      const url = await getMusicUrl(item.id)
+      this.sound = new Howl({
+        src:[url.data[0].url],
+        loop:true,
+        autoplay:true,
+        volume:0.5,
+      })
+      this.sound.play()
+    },
+
+    // 跳转歌手详情页
+    goSongerPage(item) {
+      console.log(item,'跳转歌手详情页');
+    },
+    goAlbumpage(item) {
+      console.log(item, '跳转专辑详情页');
+    },
     async getSongList() {
       if(this.$route.path.includes('dayRecommend')) {
         const result = await getDayRecommendSongList()

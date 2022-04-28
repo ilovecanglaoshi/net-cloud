@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="btn">action</button>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.26.1/axios.min.js"></script>
+    <script>
+        var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        var AudioBufferSourceNode = audioCtx.createBufferSource();
+        // var AnalyserNode = audioCtx.createAnalyser();
+        const url = 'https://7dd2f8e8-6102-492c-a522-b5a7db2ab00a.lafyun.com/file/public/6579877e-34e4-482d-b0a3-8fb58a0cbfc0.mp3'
+        let musicArrayBuffer;
+        const btn = document.querySelector('#btn')
+        
+       const r = await axios.get(url, {responseType: 'arraybuffer'})
+       console.log(r);
+        function getData() {
+            console.log(111111);
+        var request = new XMLHttpRequest();
+        request.open('GET', url, true);
+        request.responseType = 'arraybuffer'; // 设置数据类型为arraybuffer
+        request.onload = function() {
+        var audioData = request.response;
+        audioCtx.decodeAudioData(audioData, function(buffer) {
+                console.log(buffer, 'buffer');
+                playFun(buffer); 
+            },
+            function(e){"Error with decoding audio data" + e.err});
+        }
+        request.send();
+    }
+
+  function playFun(buffer){
+    AudioBufferSourceNode.buffer = buffer; // AudioBuffer数据赋值给buffer属性
+    AudioBufferSourceNode.connect(audioCtx.destination); // 如果只是播放音频，这边就直接将AudioBufferSourceNode连接到AudioDestinationNode
+    // AudioBufferSourceNode.connect(AnalyserNode);  // 实现播放后，需要将bufferSourceNode连接到AnalyserNode，才能通过AnalyserNode获取后面可视化所需的数据
+    AudioBufferSourceNode.loop = true;  // 循环播放，默认为false
+    AudioBufferSourceNode.start(0); // 开始播放音频
+  }  
+
+
+  btn.addEventListener('click', () => {
+      getData()
+  })
+    </script>
+</body>
+
+</html>

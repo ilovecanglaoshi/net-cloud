@@ -7,13 +7,13 @@
                 <slot></slot>
             </div>
         </div>
-        <musicPlayOther></musicPlayOther>
+        <!-- <musicPlayOther></musicPlayOther> -->
        <Footer></Footer>
     </div>
 </template>
 
 <script>
-import musicPlayOther from '@/components/music-play-other'
+// import musicPlayOther from '@/components/music-play-other'
 import Footer from '@/components/footer'
 import Side from '@/components/side'
 import Nav from "@/components/nav"
@@ -23,7 +23,7 @@ export default {
         Nav,
         Side,
         Footer,
-        musicPlayOther
+        // musicPlayOther
     }
 }
 </script>

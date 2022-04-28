@@ -2,20 +2,24 @@
   <div class="footerWrapper">
     <div class="progressBar"></div>
     <div class="content">
-      <div class="left">
-        <div class="icon"></div>
-        <div class="info">
-          <div class="line1">
-            <div class="songName">
-              <span class="name">歌曲名</span>
-              <div class="alias">（别名）</div>
-            </div>
-            <div class="author"> - 演唱</div>
+      <div class="leftWrapper" style="height:100%">
+        <div class="left" v-if="type">
+          <div class="icon">
+            <img :src="info.al.picUrl" alt="">
           </div>
-          <div class="line2">
-            <span>01:05</span>
-            /
-            <span>04:06</span>
+          <div class="info">
+            <div class="line1">
+              <div class="songName">
+                <span class="name">{{info.name}}</span>
+                <div class="alias" v-if="info.alia.length">{{(info.alia[0])}}</div>
+              </div>
+              <div class="author"> - {{info.ar[0].name}}</div>
+            </div>
+            <div class="line2">
+              <span>00:00</span>
+              /
+              <span>{{timeCalc(info.dt)}}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -27,8 +31,8 @@
           <i class="iconfont icon-diyiyeshouyeshangyishou"></i>
         </div>
         <div class="play">
-          <i class="iconfont icon-zantingbofang" v-if="isPlay"></i>
-          <i class="iconfont icon-zanting" v-else></i>
+          <i class="iconfont icon-zanting2x" v-if="isPlaying" @click="pause"></i>
+          <i class="iconfont icon-zanting1" v-else @click="play"></i>
         </div>
         <div class="toRight">
           <i class="iconfont icon-zuihouyiyemoyexiayishou"></i>
@@ -59,12 +63,32 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   name:'Footer',
   data() {
     return {
-      isPlay:false
+      // isPlay:false
     }
+  },
+  methods:{
+     timeCalc(time ){
+      const min = Math.floor(time / 1000 / 60)
+      const sec = Math.floor(time / 1000 ) % 60
+      return (min < 10 ? '0' + min : min) + ':' + (sec< 10 ?'0' + sec : sec)
+    },
+    pause() {
+      this.$store.commit('modulePLayingSongInfo/updateStatus', false)
+    },
+    play() {
+      this.$store.commit('modulePLayingSongInfo/updateStatus', true)
+    }
+  },
+  computed:{
+    ...mapState('modulePLayingSongInfo',['isPlaying', 'type', 'info']),
+    // isPlay() {
+    //   return this.$store.state.modulePLayingSongInfo.isPlaying
+    // }
   }
 }
 </script>
@@ -89,15 +113,23 @@ export default {
       padding: 0 20px 0 10px;
       @include flex(row, space-between, center);
       width: 100%;
-      .left{
-        @include flex(row, flex-start, center);
+      .leftWrapper{
         flex:1;
+        @include flex(row, space-between, center);
+      }
+      .left{
+        // width: 100%;
+        @include flex(row, flex-start, center);
         .icon{
           width: 40px;
           height: 40px;
           border-radius: 4px;
-          border: 1px solid #d33b31;
           margin-right: 6px;
+          overflow: hidden;
+          img{
+            width: 100%;
+            height: 100%;
+          }
         }
         .info{
           height: 40px;
@@ -107,6 +139,11 @@ export default {
              .songName{
                @include flex(row, flex-start, center);
                font-size: 13px;
+              // width: 2.15rem;
+               .name{
+                // @include no-wrap(1.1rem);
+                
+               }
                .alias{
                  color: #868686;
                }
@@ -124,6 +161,8 @@ export default {
       }
       .middle{
         flex:1;
+        // width: 2.4rem;
+        margin: auto;
         @include flex(row, center, center);
         .toLeft,.toRight{
           color: #d33b31;
